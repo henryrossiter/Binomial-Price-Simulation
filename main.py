@@ -1,5 +1,6 @@
 import random
 import copy
+import visualizations
 
 # Simulate an asset value that either rises by 'upside_delta' with probability 'probability_of_upside'
 # or falls by 'downside_delta' with probability 1 - 'probability_of_upside' in each period.
@@ -51,11 +52,10 @@ def isValidPortfolio(portfolio):
     ])
 
 def simulatePortfolioReturn(portfolio, num_periods):
+    portfolio = copy.deepcopy(portfolio)
     if not isValidPortfolio(portfolio):
         print('Invalid Portfolio')
         return
-    initial_portfolio_value = 0
-    final_portfolio_value = 0
     for position in portfolio:
         name = position['name']
         initial_value = position['initial_value']
@@ -65,14 +65,32 @@ def simulatePortfolioReturn(portfolio, num_periods):
             position['downside_delta'],
             num_periods,
         )
-        print(name + ' initial value: ' + str(initial_value))
-        print(name + ' final value: ' + str(final_value))
-        initial_portfolio_value += initial_value
-        final_portfolio_value += final_value
+        position['final_value'] = final_value
 
     return portfolio
-      
-simulatePortfolio(portfolio, 1000)
+
+def getPortfolioPerformance(portfolio):
+    if not isValidPortfolio(portfolio):
+        print('Invalid Portfolio')
+        return
+    if not all(['final_value' in position for position in portfolio]):
+        print('Final portfolio values must be calculated before computing performance')
+        return
+    initial_portfolio_value = 0
+    final_portfolio_value = 0
+    for position in portfolio:
+        initial_portfolio_value += position['initial_value']
+        final_portfolio_value += position['final_value']
+    return final_portfolio_value / initial_portfolio_value
+
+def simulatePortfolioReturnMonteCarlo(portfolio, number_of_simulations=1000, num_periods=12):
+    rets = []
+    for _ in range(number_of_simulations):
+        single_performance = getPortfolioPerformance(simulatePortfolioReturn(portfolio, num_periods))
+        rets.append(single_performance)
+    return rets
+        
+print(simulatePortfolioReturnMonteCarlo(portfolio, 1000))
 
         
 
