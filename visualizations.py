@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from matplotlib import animation, rc
+
 
 def plotReturnDistribution(returns):
     min_return, max_return = min(returns), max(returns)
@@ -13,3 +15,15 @@ def plotReturnDistribution(returns):
     plt.ylabel('Frequency')
     plt.xlabel('Return')
     plt.show()
+
+def plotSinglePrice(prices, interval):
+    plt.plot(prices)
+    plt.title('Market Price over Time')
+    plt.ylabel('Price')
+    plt.xlabel('Interval')
+    plt.xlim(0,10)
+    plt.show()
+
+def plotPriceSeries(prices, interval):
+    for i in range(len(prices)):
+        next_plot = plotSinglePrice(prices[:i], interal)
