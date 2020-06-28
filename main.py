@@ -28,34 +28,44 @@ portfolio = [
         'name': 'Gold',
         'initial_value': 200,
         'probability_of_upside': 0.5,
-        'upside_delta': 0.2,
+        'upside_delta': 0.5,
         'downside_delta': 0.3,
     },
     {
         'name': 'Silver',
         'initial_value': 300,
         'probability_of_upside': 0.8,
-        'upside_delta': 0.1,
+        'upside_delta': 0.3,
         'downside_delta': 0.1,
     },
 ]
 
+def isValidPosition(position):
+    return 'name' in position and 'initial_value' in position and 'probability_of_upside' in position and 'upside_delta' in position and 'downside_delta' in position
+
+def simulatePositionReturn(position, num_periods):
+    if not isValidPosition(position):
+        print('Invalid position')
+        return
+    position = copy.deepcopy(position)
+    initial_value = position['initial_value']
+    final_value = initial_value * simulateBinomialPrice(
+        position['probability_of_upside'],
+        position['upside_delta'],
+        position['downside_delta'],
+        num_periods,
+    )
+    position['final_value'] = final_value
+    return position
 
 def isValidPortfolio(portfolio):
-    return all([
-        'name' in position
-        and 'initial_value' in position
-        and 'probability_of_upside' in position
-        and 'upside_delta' in position
-        and 'downside_delta' in position
-        for position in portfolio
-    ])
+    return all([isValidPosition(position) for position in portfolio])
 
 def simulatePortfolioReturn(portfolio, num_periods):
-    portfolio = copy.deepcopy(portfolio)
     if not isValidPortfolio(portfolio):
-        print('Invalid Portfolio')
+        print('Invalid portfolio')
         return
+    portfolio = copy.deepcopy(portfolio)
     for position in portfolio:
         name = position['name']
         initial_value = position['initial_value']
@@ -66,8 +76,13 @@ def simulatePortfolioReturn(portfolio, num_periods):
             num_periods,
         )
         position['final_value'] = final_value
-
     return portfolio
+
+def getPositionPerformance(position):
+    if 'final_value' not in position or 'initial_value' not in position:
+        print('Invalid position')
+        return
+    return position['final_value'] / position['initial_value']
 
 def getPortfolioPerformance(portfolio):
     if not isValidPortfolio(portfolio):
@@ -83,6 +98,13 @@ def getPortfolioPerformance(portfolio):
         final_portfolio_value += position['final_value']
     return final_portfolio_value / initial_portfolio_value
 
+def simulatePositionReturnMonteCarlo(position, number_of_simulations=1000, num_periods=12):
+    rets = []
+    for _ in range(number_of_simulations):
+        single_performance = getPositionPerformance(simulatePositionReturn(position, num_periods))
+        rets.append(single_performance)
+    return rets
+
 def simulatePortfolioReturnMonteCarlo(portfolio, number_of_simulations=1000, num_periods=12):
     rets = []
     for _ in range(number_of_simulations):
@@ -90,7 +112,8 @@ def simulatePortfolioReturnMonteCarlo(portfolio, number_of_simulations=1000, num
         rets.append(single_performance)
     return rets
         
-print(simulatePortfolioReturnMonteCarlo(portfolio, 1000))
+returns = simulatePositionReturnMonteCarlo(portfolio[1], 500000)
+visualizations.plotReturnDistribution(returns)
 
         
 
