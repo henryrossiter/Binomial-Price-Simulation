@@ -1,10 +1,10 @@
 portfolio = [
     {
         'name': 'TSLA',
-        'initial_value': 100,
+        'initial_value': 1,
         'probability_of_upside': 0.5,
-        'upside_delta': 0.2,
-        'downside_delta': 0.2,
+        'upside_delta': 0.1,
+        'downside_delta': 0.1,
     },
     {
         'name': 'Gold',

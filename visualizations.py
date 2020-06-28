@@ -50,6 +50,10 @@ def getPriceSeriesAnimation(prices, save = False):
         prices[0] + max_abs_delta
     )
 
+    ax.set_xlabel('Interval')
+    ax.set_ylabel('Price')
+    ax.set_title('Binomial Price Simulation')
+
     def update(i):
 
         # Update the line and the axes (with a new xlabel). Return a tuple of
@@ -60,7 +64,7 @@ def getPriceSeriesAnimation(prices, save = False):
 
     # FuncAnimation will call the 'update' function for each frame; here
     # animating over 10 frames, with an interval of 200ms between frames.
-    anim = FuncAnimation(fig, update, frames=np.arange(0, len(prices)), interval=200)
+    anim = FuncAnimation(fig, update, frames=np.arange(0, len(prices)), interval=100)
     if save:
         anim.save('prices.gif', dpi=80, writer='imagemagick')
     else:
