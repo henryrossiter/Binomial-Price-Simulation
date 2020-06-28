@@ -1,8 +1,8 @@
 import utils
 from portfolio import portfolio
-import livePriceVisualization
+import visualizations
 
-returns = utils.getPositionReturnSeries(portfolio[0], 12)
-livePriceVisualization.getPriceSeriesAnimation(returns)
+returns = utils.getPositionReturnSeries(portfolio[0], 50)
+visualizations.getPriceSeriesAnimation(returns)
         
 
