@@ -74,7 +74,7 @@ def getMultiplePriceSeriesAnimation(prices, save = False):
     
     plt.xlabel('Interval')
     plt.ylabel('Price')
-    plt.title('Binomial Price Simulation')
+    plt.title('Monte Carlo Price Simulation')
 
     lines = []
     for _ in range(len(prices)):
