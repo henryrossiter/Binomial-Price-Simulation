@@ -26,18 +26,11 @@ def plotSinglePrice(prices, interval):
     plt.show()
 
 def getPriceSeriesAnimation(prices, save = False):
-
     fig, ax = plt.subplots()
     fig.set_tight_layout(True)
 
-    # Query the figure's on-screen size and DPI. Note that when saving the figure to
-    # a file, we need to provide a DPI for that separately.
     print('fig size: {0} DPI, size in inches {1}'.format(
         fig.get_dpi(), fig.get_size_inches()))
-
-    # Plot a scatter that persists (isn't redrawn) and the initial line.
-    # x = np.arange(0, 20, 0.1)
-    # ax.scatter(x, x + np.random.normal(0, 3.0, len(x)))
 
     line, = ax.plot(prices)
     max_abs_delta = max(
@@ -55,16 +48,12 @@ def getPriceSeriesAnimation(prices, save = False):
     ax.set_title('Binomial Price Simulation')
 
     def update(i):
-
-        # Update the line and the axes (with a new xlabel). Return a tuple of
-        # "artists" that have to be redrawn for this frame.
+        # Update the line and the axes
         line.set_xdata(list(range(i)))
         line.set_ydata(prices[:i])
         return line, ax
-
-    # FuncAnimation will call the 'update' function for each frame; here
-    # animating over 10 frames, with an interval of 200ms between frames.
-    anim = FuncAnimation(fig, update, frames=np.arange(0, len(prices)), interval=100)
+    total_intervals = len(prices)
+    anim = FuncAnimation(fig, update, frames=np.arange(0, total_intervals), interval=80)
     if save:
         anim.save('prices.gif', dpi=80, writer='imagemagick')
     else:
