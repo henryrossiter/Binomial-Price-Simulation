@@ -59,3 +59,45 @@ def getPriceSeriesAnimation(prices, save = False):
     else:
         # plt.show() will just loop the animation forever.
         plt.show()
+
+def getMultiplePriceSeriesAnimation(prices, save = False):
+
+    highest_price = max([max(price_list) for price_list in prices])
+
+    y_lim = (0, highest_price)
+    
+    x_lim = (0, len(prices[0]))
+
+    fig = plt.figure()
+    ax1 = plt.axes(xlim=x_lim, ylim=y_lim)
+    line, = ax1.plot([], [], lw=2)
+    
+    plt.xlabel('Interval')
+    plt.ylabel('Price')
+    plt.title('Binomial Price Simulation')
+
+    lines = []
+    for _ in range(len(prices)):
+        line, = ax1.plot([],[],lw=2)
+        lines.append(line)
+
+    def init():
+        for line in lines:
+            line.set_data([],[])
+        return lines
+
+    def update(i):
+        # Update the line and the axes
+        for ind in range(i):
+            lines[ind].set_data(list(range(len(prices[0]))), prices[ind])
+        for ind in range(i, len(prices)):
+            lines[ind].set_data([],[])
+        
+        return lines
+    total_intervals = len(prices)
+    anim = FuncAnimation(fig, update, init_func=init, frames=np.arange(0, total_intervals), interval=50, blit=True)
+    if save:
+        anim.save('prices.gif', dpi=80, writer='imagemagick')
+    else:
+        # plt.show() will just loop the animation forever.
+        plt.show()
