@@ -2,7 +2,12 @@ import utils
 from portfolio import portfolio
 import visualizations
 
+# Simulate a price series over 50 intervals
 returns = utils.getPositionReturnSeries(portfolio[0], 50)
+# Create a gif of the price series
+visualizations.getPriceSeriesAnimation(returns)
 
-returns_arr = [utils.getPositionReturnSeries(portfolio[0], 100) for _ in range(100)]    
-visualizations.getMultiplePriceSeriesAnimation(returns_arr, save=True)
+# Simulate 100 price series' over 100 intervals
+returns_arr = [utils.getPositionReturnSeries(portfolio[0], 100) for _ in range(100)]
+# Create a gif of the series of price series
+visualizations.getMultiplePriceSeriesAnimation(returns_arr)
