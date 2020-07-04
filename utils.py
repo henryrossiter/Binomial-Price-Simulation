@@ -58,7 +58,6 @@ def simulatePortfolioReturn(portfolio, num_periods):
         return
     portfolio = copy.deepcopy(portfolio)
     for position in portfolio:
-        name = position['name']
         initial_value = position['initial_value']
         final_value = initial_value * simulateBinomialPrice(
             position['probability_of_upside'],

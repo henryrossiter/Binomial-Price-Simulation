@@ -11,3 +11,10 @@ visualizations.getPriceSeriesAnimation(returns)
 returns_arr = [utils.getPositionReturnSeries(portfolio[0], 100) for _ in range(100)]
 # Create a gif of the series of price series
 visualizations.getMultiplePriceSeriesAnimation(returns_arr)
+
+
+# Simulate return of entire portfolio over 10 intervals
+num_intervals = 10
+simulated_portfolio = utils.simulatePortfolioReturn(portfolio, num_intervals)
+performance = utils.getPortfolioPerformance(simulated_portfolio)
+print('after simulating {} intervals, portfolio value is {} times initial value'.format(num_intervals, performance))
