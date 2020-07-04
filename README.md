@@ -25,3 +25,13 @@
 - Customize portfolio in ```./portfolio.py```
 
 - `python3 main.py`
+
+## Examples
+
+- Single asset simulation with 0.50 probability of price increase at each interval
+
+![](figures/singlePriceSimulation.gif)
+
+- 100 simulations over 100 time intervals
+
+![](figures/monteCarlo2.gif)
